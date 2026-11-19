@@ -1,0 +1,47 @@
+<iso_project image_name="mkpsxiso.bin" cue_sheet="mkpsxiso.cue">
+    <track type="data" xa_edc="true" new_type="false">
+        <identifiers system="PLAYSTATION" application="PLAYSTATION" volume="CUBE_PSX" volume_set="CUBE_PSX" publisher="MEIDOTEK" data_preparer="PSN00BSDK 0.24" copyright="README.TXT;1" creation_date="0000000000000000+0"/>
+        <license file="/tmp/dx/license_data.dat"/>
+        <default_attributes gmt_offs="0" xa_attrib="0" xa_perm="1365" xa_gid="0" xa_uid="0"/>
+        <directory_tree gmt_offs="-32">
+            <file name="SYSTEM.CNF" source="/tmp/dx/SYSTEM.CNF" type="data"/>
+            <file name="CUBEPSX.EXE" source="/tmp/dx/CUBEPSX.EXE" type="data"/>
+            <file name="PIG01.CMP" source="/tmp/dx/PIG01.CMP" type="data"/>
+            <file name="PIG01.TEX" source="/tmp/dx/PIG01.TEX" type="data"/>
+            <file name="CRUEL01.CMP" source="/tmp/dx/CRUEL01.CMP" type="data"/>
+            <file name="CRUEL01.TEX" source="/tmp/dx/CRUEL01.TEX" type="data"/>
+            <file name="PIG09.CMP" source="/tmp/dx/PIG09.CMP" type="data"/>
+            <file name="PIG09.TEX" source="/tmp/dx/PIG09.TEX" type="data"/>
+            <file name="WSG1.CMP" source="/tmp/dx/WSG1.CMP" type="data"/>
+            <file name="WSG1.TEX" source="/tmp/dx/WSG1.TEX" type="data"/>
+            <file name="CRUEL02.CMP" source="/tmp/dx/CRUEL02.CMP" type="data"/>
+            <file name="CRUEL02.TEX" source="/tmp/dx/CRUEL02.TEX" type="data"/>
+            <file name="PIG07.CMP" source="/tmp/dx/PIG07.CMP" type="data"/>
+            <file name="PIG07.TEX" source="/tmp/dx/PIG07.TEX" type="data"/>
+            <file name="PIGFIN.CMP" source="/tmp/dx/PIGFIN.CMP" type="data"/>
+            <file name="PIGFIN.TEX" source="/tmp/dx/PIGFIN.TEX" type="data"/>
+            <file name="PIG02.CMP" source="/tmp/dx/PIG02.CMP" type="data"/>
+            <file name="PIG02.TEX" source="/tmp/dx/PIG02.TEX" type="data"/>
+            <file name="PIG03.CMP" source="/tmp/dx/PIG03.CMP" type="data"/>
+            <file name="PIG03.TEX" source="/tmp/dx/PIG03.TEX" type="data"/>
+            <file name="PIG04.CMP" source="/tmp/dx/PIG04.CMP" type="data"/>
+            <file name="PIG04.TEX" source="/tmp/dx/PIG04.TEX" type="data"/>
+            <file name="PIG05.CMP" source="/tmp/dx/PIG05.CMP" type="data"/>
+            <file name="PIG05.TEX" source="/tmp/dx/PIG05.TEX" type="data"/>
+            <file name="PIG08.CMP" source="/tmp/dx/PIG08.CMP" type="data"/>
+            <file name="PIG08.TEX" source="/tmp/dx/PIG08.TEX" type="data"/>
+            <file name="WSG2.CMP" source="/tmp/dx/WSG2.CMP" type="data"/>
+            <file name="WSG2.TEX" source="/tmp/dx/WSG2.TEX" type="data"/>
+            <file name="WSG3.CMP" source="/tmp/dx/WSG3.CMP" type="data"/>
+            <file name="WSG3.TEX" source="/tmp/dx/WSG3.TEX" type="data"/>
+            <file name="PIG06.CMP" source="/tmp/dx/PIG06.CMP" type="data"/>
+            <file name="PIG06.TEX" source="/tmp/dx/PIG06.TEX" type="data"/>
+            <file name="MODELS.PAK" source="/tmp/dx/MODELS.PAK" type="data"/>
+            <file name="SKY.PAK" source="/tmp/dx/SKY.PAK" type="data"/>
+            <file name="UI.PAK" source="/tmp/dx/UI.PAK" type="data"/>
+            <file name="SOUND.PAK" source="/tmp/dx/SOUND.PAK" type="data"/>
+            <file name="VOICE.PAK" source="/tmp/dx/VOICE.PAK" type="data"/>
+            <dummy sectors="150" type="0"/>
+        </directory_tree>
+    </track>
+</iso_project>

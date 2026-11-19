@@ -1,0 +1,6 @@
+build/
+out/
+*.bin
+*.cue
+!maps/*.bin
+__pycache__/

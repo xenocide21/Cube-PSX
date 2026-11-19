@@ -1,0 +1,81 @@
+Cube PSX - credits
+==================
+
+Cube PSX: the PlayStation port of Cube, by Xenocide21 (2026). Programmed with Claude (Anthropic).
+
+Cube, the game and engine it is ported from: Wouter van Oortmerssen (Aardappel), 2001-2005.
+  http://cubeengine.com  -  thank you, Wouter, for Cube, and for welcoming the port.
+
+Everything below comes from the Cube release (2005), converted for the PlayStation, except where it says otherwise.
+The authors' own readmes are in the licenses/ folder. Free, non-commercial distribution only: see LICENSE.txt.
+
+
+MAPS
+----
+  Piglet Campaign (pig01-pig09, pigfin)      Jonathan "Piglet" Whiting (2002)  - map design (c) Jonathan Whiting
+  Cruel (cruel01, cruel02)                   unicious
+  WSG series (wsg1, wsg2, wsg3)              SirLiveAlot (Corey)
+  XENO (xeno01-xeno08, xdm1-xdm3)            Xenocide21 - new for Cube PSX
+  Facing Cubes (fcubes)                      Xenocide21 - new for Cube PSX
+  On the PlayStation the maps get pistol ammo boxes beside their ammo (the pistol is new); the designs are the authors'.
+
+TEXTURES
+--------
+  ikbase, ik2k, and the iklake sky box       Iikka "Fingers" Keranen  (www.digital-eel.com/surface)
+  egyptsoc (Egyptian), tech1soc (Tech1)      Sock  (www.planetquake.com/simland)
+  payne                                      Remedy Entertainment Ltd. - the Max Payne textures, original artwork by
+                                             Remedy, freely made available by them
+  than_ind (industrial)                      Than  (www.planetquake.com/cesspit)
+  jf1                                        John Fitzgibbons (metlslime)
+  schwenz (from the "asylum" set)            Schwenz
+  aard                                       Wouter van Oortmerssen (Aardappel)
+  golgotha                                   Crack dot Com - from Golgotha, released into the public domain
+  dg                                         from the Cube release (no readme with them)
+  Font                                       Cube's own (data/newchars.png)
+  The space sky of Facing Cubes, the night skies of XENO: drawn for Cube PSX
+
+MODELS
+------
+  Monsters (Quake II player models):
+    Ogro                                     model Magarnigal, skins Ogro_Fix
+    Rhino                                    model Andreas Moller, animations Andrew Eglington, skin Jens Matthies,
+                                             sounds Eric vonRothkirch - property of The Coven
+    Ratamahatta (rat), Bauul                 Brian "EvilBastard" Collins
+    Slith                                    Ryan Butts & Jeramy Cooke
+    Knight (PKnight)                         model and skin James Green (c) 1998; CTF and evil skins Ryan "MrRogers"
+                                             Butts. Perilith (c) 1995-1998 Vito Miliano
+    Goblin                                   Conrad; extra skins Rodrigo
+    Hellpig                                  Psionic
+  Weapons in hand (shotgun, chaingun, rocket launcher, rifle, fist): DarthVim
+  Armour (green, yellow)                     Seth Galbraith - GNU GPL v2 (originals in licenses/gpl-models/)
+  Invulnerability (quad)                     Ulrich Galbraith - GNU GPL v2 (originals in licenses/gpl-models/)
+  Map models (trees, palm tree, thorns, plants, grass, ivy): dcp - Dietmar Pier  (www.dietmarpier.de)
+  Items, teleporter, carrot, tree1, bridge:  from the Cube release
+  Pistol, pistol ammo box, CTF flag:         made for Cube PSX (Xenocide21)
+  QUAKE(R) and QUAKE II(R) are registered trademarks of id Software, Inc.
+
+SOUND
+-----
+  Sound effects "aard"                       Wouter van Oortmerssen - public domain
+  Sound effects "free"                       free sounds from the web (free/shotgun.wav modified by DarthVim)
+  Weapon sounds "awesund"                    Awesund - the AwesundFX1 weapon sounds for SiN (readme included as asked:
+                                             licenses/sound/awesund-readmeFX1.txt); awesund/rifle.wav modified by
+                                             DarthVim
+  Monster death sounds "ppm"                 from the Quake II player models above
+  Voice: Giga Chad                           Xenocide21
+  Voice: Giga Stacy                          Xenocide21's voice lines, tuned into a female voice
+
+MUSIC
+-----
+  The Cube Album (11 songs) and "Revenge"    Marc A. Pullen (Fanatic) - written for Cube, 2004
+                                             (fanaticalproductions.net)
+  cubez0r                                    DaMaul
+  cube1 ("Hunting down the demons"), ambient, deathB
+                                             Lu-Wang - MIDI songs, played for Cube PSX with the TimGM6mb General MIDI
+                                             soundfont by Tim Brechbill (GNU GPL v2)
+
+THANKS
+------
+  Everyone credited in Cube's own readme (licenses/engine/cube-readme-credits-and-license.txt), who made Cube what it is.
+  PSn00bSDK (Lameguy64 and contributors) and mkpsxiso, the tools the PlayStation version is built with.
+  PCSX-ReARMed (the libretro team and its authors), the emulator inside PSLink, the two-console link-cable tester.

@@ -1,0 +1,92 @@
+Cube PSX - license
+==================
+
+Cube PSX is a port of Cube, by Wouter van Oortmerssen, to the Sony PlayStation. It is three different things, under
+three kinds of terms:
+
+1. The program (the source code in src/, tools/, test/ and rig/) - the Cube license (zlib, with one extra clause)
+2. The game media (maps, textures, models, sounds, music) - each piece keeps its author's own terms (see CREDITS.txt
+   and the licenses/ folder): together, they allow free, non-commercial distribution only
+3. New work made for Cube PSX (the XENO maps, Facing Cubes, the portraits and voices) - see the end of this file
+
+
+1. The program
+--------------
+
+Cube PSX is an altered version of the Cube engine source code and is NOT the original software. It was rewritten in C
+for the PlayStation (PSn00bSDK) by Xenocide21, with Claude (Anthropic), in 2026, starting from the Cube source code
+release of 2005. As the Cube license requires, the original notice follows unaltered, and this altered version is
+under the same license: it may not be relicensed.
+
+    Cube game engine source code, 20 dec 2003 release.
+
+    Copyright (C) 2001-2005 Wouter van Oortmerssen.
+
+    This software is provided 'as-is', without any express or implied
+    warranty.  In no event will the authors be held liable for any damages
+    arising from the use of this software.
+
+    Permission is granted to anyone to use this software for any purpose,
+    including commercial applications, and to alter it and redistribute it
+    freely, subject to the following restrictions:
+
+    1. The origin of this software must not be misrepresented; you must not
+       claim that you wrote the original software. If you use this software
+       in a product, an acknowledgment in the product documentation would be
+       appreciated but is not required.
+    2. Altered source versions must be plainly marked as such, and must not be
+       misrepresented as being the original software.
+    3. This notice may not be removed or altered from any source distribution.
+
+    additional clause specific to Cube:
+
+    4. Source versions may not be "relicensed" under a different license
+       without my explicitly written permission.
+
+The changes and additions of Cube PSX (Copyright (C) 2026 Xenocide21) are given under the same terms.
+
+The program is built with PSn00bSDK, whose libraries are under the Mozilla Public License 2.0
+(licenses/engine/PSn00bSDK-LICENSE.md; source: https://github.com/Lameguy64/PSn00bSDK). Cube PSX uses the libraries
+unchanged; its one changed SDK file, the elf2x tool (sdk-patches/elf2x.c), is in the source download, under the MPL.
+
+
+2. The game media
+-----------------
+
+Cube's own license covers only its source code: "Game media included in the cube game (maps, textures, sounds, models
+etc.) are not covered by this license, and may have individual copyrights and distribution restrictions (see
+individual readmes)." Cube PSX carries the same media, converted for the PlayStation (smaller textures, fewer colours,
+fewer polygons, compressed sound), so the same restrictions apply. The ones that matter most:
+
+  - NON-COMMERCIAL ONLY. Cube PSX may not be sold, nor bundled with anything sold, nor paid for in any way. Several
+    authors forbid profit (the ikbase and ik2k textures, the Max Payne textures by Remedy, the Bauul and Ratamahatta
+    models, the Piglet and WSG maps).
+  - BY DOWNLOAD. The ikbase and ik2k textures (used on most maps) may be distributed by electronic media only: share
+    the download; don't press or sell discs. Burning your own copy to play is fine.
+  - CREDIT. Every author is credited in CREDITS.txt, which must travel with the game; their original readmes are in
+    licenses/ and travel with it too.
+
+Some media is under the GNU GPL v2: the armour and invulnerability models (Seth and Ulrich Galbraith). Their original
+files, the preferred form for changing them, are in licenses/gpl-models/; tools/mkmodel.py converts them.
+
+Each author's own words are in licenses/: where this summary and an author's readme differ, the readme wins.
+
+
+3. New work made for Cube PSX
+-----------------------------
+
+The XENO map pack (8 single player maps, 3 multiplayer maps) and Facing Cubes (the map, and its space sky box), the
+Giga Chad and Giga Stacy portraits and voices, the pistol, ammo box and flag models and their skins: Copyright (C) 2026
+Xenocide21. Free to play, share and use in your own Cube maps and mods, non-commercially, with credit to Xenocide21.
+The voices are Xenocide21's own; please don't use them outside Cube and Cube PSX.
+
+
+Not affiliated
+--------------
+
+Cube PSX is a fan project, not affiliated with or endorsed by Sony Interactive Entertainment. "PlayStation" and "PSX"
+are trademarks of Sony Interactive Entertainment Inc. QUAKE(R) and QUAKE II(R) are registered trademarks of id Software,
+Inc. (as the readmes of the Quake II player models used as monsters ask to be stated). All other names belong to their
+owners.
+
+THE GAME IS PROVIDED AS IS, WITHOUT ANY WARRANTY.

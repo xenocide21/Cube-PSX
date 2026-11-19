@@ -1,0 +1,271 @@
+diff --git a/Makefile b/Makefile
+index 2fee12c..80c8ed3 100644
+--- a/Makefile
++++ b/Makefile
+@@ -93,7 +93,7 @@ OBJS += libpcsxcore/cdriso.o libpcsxcore/cdrom.o libpcsxcore/cdrom-async.o \
+ 	libpcsxcore/psxcommon.o libpcsxcore/psxcounters.o libpcsxcore/psxdma.o \
+ 	libpcsxcore/psxhw.o libpcsxcore/psxinterpreter.o libpcsxcore/psxmem.o \
+ 	libpcsxcore/psxevents.o libpcsxcore/r3000a.o \
+-	libpcsxcore/sio.o libpcsxcore/spu.o libpcsxcore/gpu.o \
++	libpcsxcore/sio.o libpcsxcore/sio1.o libpcsxcore/spu.o libpcsxcore/gpu.o \
+ 	libpcsxcore/pad.o
+ OBJS += libpcsxcore/gte.o libpcsxcore/gte_nf.o libpcsxcore/gte_divider.o
+ #OBJS += libpcsxcore/disr3000a.o
+diff --git a/frontend/libretro-version-script b/frontend/libretro-version-script
+index b0c262d..a618d68 100644
+--- a/frontend/libretro-version-script
++++ b/frontend/libretro-version-script
+@@ -1,5 +1,5 @@
+ {
+-   global: retro_*;
++   global: retro_*; pslink_*;
+    local: *;
+ };
+ 
+diff --git a/libpcsxcore/psxevents.c b/libpcsxcore/psxevents.c
+index 4f2d5cd..77c2858 100644
+--- a/libpcsxcore/psxevents.c
++++ b/libpcsxcore/psxevents.c
+@@ -5,6 +5,7 @@
+ #include "psxdma.h"
+ #include "mdec.h"
+ #include "psxevents.h"
++#include "sio1.h"
+ 
+ //#define evprintf printf
+ #define evprintf(...)
+@@ -59,6 +60,7 @@ static irq_func * const irq_funcs[] = {
+ 	[PSXINT_SPU_UPDATE] = spuUpdate,
+ 	[PSXINT_SPU_IRQ] = spuDelayedIrq,
+ 	[PSXINT_RCNT] = psxRcntUpdate,
++	[PSXINT_SIO1] = sio1Interrupt,
+ };
+ 
+ void irq_test(psxCP0Regs *cp0)
+diff --git a/libpcsxcore/psxevents.h b/libpcsxcore/psxevents.h
+index 543f8fc..cea4ce9 100644
+--- a/libpcsxcore/psxevents.h
++++ b/libpcsxcore/psxevents.h
+@@ -19,6 +19,7 @@ enum {
+ 	PSXINT_CDRLID,       // cdrLidSeekInterrupt
+ 	PSXINT_IRQ10,        // irq10Interrupt
+ 	PSXINT_SPU_UPDATE,   // spuUpdate
++	PSXINT_SIO1,         // sio1Interrupt (PSLink)
+ 	PSXINT_COUNT
+ };
+ 
+diff --git a/libpcsxcore/psxhw.c b/libpcsxcore/psxhw.c
+index f75f1cc..5d919f9 100644
+--- a/libpcsxcore/psxhw.c
++++ b/libpcsxcore/psxhw.c
+@@ -22,6 +22,7 @@
+ */
+ 
+ #include "psxhw.h"
++#include "sio1.h"
+ #include "psxevents.h"
+ #include "mdec.h"
+ #include "cdrom.h"
+@@ -41,6 +42,7 @@ void psxHwReset() {
+ 	// SIO_STAT: Armored Core, F1 Link cable misdetection
+ 	// (reset value is 0x805 according to nochash?)
+ 	psxHu16ref(0x1054) = SWAPu16(0x01a5);
++	sio1Reset();
+ }
+ 
+ void psxHwWriteIstat(u32 value)
+@@ -163,6 +165,7 @@ u32 psxHwReadGpuSR(void)
+ 
+ u8 psxHwRead8(psxRegisters *regs, u32 add) {
+ 	u32 ofs = add & 0xffff;
++	if ((ofs & 0xfff0) == 0x1050) return sio1Read(ofs, 1);          /* PSLink: the serial port */
+ 	u8 hard;
+ 
+ 	switch (ofs) {
+@@ -225,6 +228,7 @@ u8 psxHwRead8(psxRegisters *regs, u32 add) {
+ 
+ u16 psxHwRead16(psxRegisters *regs, u32 add) {
+ 	u32 ofs = add & 0xffff;
++	if ((ofs & 0xfff0) == 0x1050) return sio1Read(ofs, 2);          /* PSLink: the serial port */
+ 	u16 hard;
+ 
+ 	switch (ofs) {
+@@ -273,6 +277,7 @@ u16 psxHwRead16(psxRegisters *regs, u32 add) {
+ 
+ u32 psxHwRead32(psxRegisters *regs, u32 add) {
+ 	u32 ofs = add & 0xffff;
++	if ((ofs & 0xfff0) == 0x1050) return sio1Read(ofs, 4);          /* PSLink: the serial port */
+ 	u32 hard;
+ 
+ 	switch (ofs) {
+@@ -314,6 +319,7 @@ u32 psxHwRead32(psxRegisters *regs, u32 add) {
+ 
+ void psxHwWrite8(psxRegisters *regs, u32 add, u32 value) {
+ 	u32 ofs = add & 0xffff;
++	if ((ofs & 0xfff0) == 0x1050) { sio1Write(ofs, value, 1); return; }   /* PSLink */
+ 	switch (ofs) {
+ 	case 0x1040: sioWrite8(value); return;
+ 	case 0x10f6:
+@@ -348,6 +354,7 @@ void psxHwWrite8(psxRegisters *regs, u32 add, u32 value) {
+ 
+ void psxHwWrite16(psxRegisters *regs, u32 add, u32 value) {
+ 	u32 ofs = add & 0xffff;
++	if ((ofs & 0xfff0) == 0x1050) { sio1Write(ofs, value, 2); return; }   /* PSLink */
+ 	switch (ofs) {
+ 	case 0x1040: sioWrite8(value); return;
+ 	case 0x1048: sioWriteMode16(value); return;
+@@ -424,6 +431,7 @@ void psxHwWrite16(psxRegisters *regs, u32 add, u32 value) {
+ 
+ void psxHwWrite32(psxRegisters *regs, u32 add, u32 value) {
+ 	u32 ofs = add & 0xffff;
++	if ((ofs & 0xfff0) == 0x1050) { sio1Write(ofs, value, 4); return; }   /* PSLink */
+ 	switch (ofs) {
+ 	case 0x1040: sioWrite8(value); return;
+ 	case 0x1048: log_unhandled("w32 %08x %08x @%08x\n", add, value, regs->pc);
+diff --git a/libpcsxcore/sio1.c b/libpcsxcore/sio1.c
+new file mode 100644
+index 0000000..32481dc
+--- /dev/null
++++ b/libpcsxcore/sio1.c
+@@ -0,0 +1,117 @@
++/*
++ * sio1.c - the PlayStation's serial port (SIO1, the "Serial I/O" port the link cable plugs into), for PSLink.
++ * Added to PCSX-ReARMed (GPL v2, like the rest of it).
++ *
++ * A UART: a byte written to SIO_DATA goes out over the cable after 10 bit-times (start, 8 data, stop) at the
++ * programmed baud rate, and the frontend is handed it (pslink_sio1_set_tx); bytes the frontend hands in
++ * (pslink_sio1_rx) wait in a receive FIFO and raise IRQ 8 as the control register asks.  The real FIFO holds 8 bytes;
++ * this one holds more (the frontend delivers a frame's worth at once, and the game's handler empties it while
++ * RXRDY stays set, so nothing a real program does can tell).  CTS and DSR read high while a cable is connected.
++ */
++#include <string.h>
++#include "psxcommon.h"
++#include "psxhw.h"
++#include "psxmem.h"
++#include "r3000a.h"
++#include "psxevents.h"
++#include "sio1.h"
++#include <stdio.h>
++#include <stdlib.h>
++static int dbg = -1;
++#define DBG(...) do { if (dbg < 0) dbg = getenv("SIO1DBG") != NULL; if (dbg) fprintf(stderr, __VA_ARGS__); } while (0)
++
++#define RXQ 4096
++static struct {
++	u16 mode, ctrl, baud, misc;
++	int irq, tx_busy, connected;
++	u8 rx[RXQ]; int rxh, rxn;
++} s1;
++static void (*tx_cb)(unsigned char);
++
++void pslink_sio1_set_tx(void (*cb)(unsigned char)) { tx_cb = cb; }
++void pslink_sio1_connect(int on) { s1.connected = on; }
++
++static u32 byte_cycles(void) {
++	u32 reload = s1.baud ? s1.baud : 1, f = (s1.mode & 3) == 3 ? 64 : (s1.mode & 3) == 2 ? 16 : 1;
++	u32 c = reload * f * 10;
++	return c < 64 ? 64 : c;
++}
++static void raise_irq(void) {
++	s1.irq = 1;
++	psxHu32ref(0x1070) |= SWAPu32(0x100);                            /* IRQ 8: SIO */
++}
++static int rx_threshold(void) { static const int n[4] = { 1, 2, 4, 8 }; return n[(s1.ctrl >> 8) & 3]; }
++static void check_rx_irq(void) {
++	if ((s1.ctrl & 0x0804) == 0x0804 && s1.rxn >= rx_threshold() && !s1.irq) raise_irq();     /* RXEN + RX IRQ */
++}
++
++/* the frontend: bytes from the other console */
++void pslink_sio1_rx(const unsigned char *d, int n) {
++	DBG("[%p] rx %d ctrl %04x\n", (void *)&s1, n, s1.ctrl);
++	while (n-- > 0 && s1.rxn < RXQ) { s1.rx[(s1.rxh + s1.rxn) % RXQ] = *d++; s1.rxn++; }
++	set_event(PSXINT_SIO1, 64);                                      /* raise the IRQ from inside the emulation */
++}
++int pslink_sio1_pending(void) { return s1.rxn; }
++
++void sio1Interrupt(void) {
++	if (s1.tx_busy) {
++		s1.tx_busy = 0;
++		if (s1.ctrl & 0x0400) { if (!s1.irq) raise_irq(); }        /* TX IRQ */
++	}
++	check_rx_irq();
++}
++
++static u32 stat(void) {
++	u32 v = 0;
++	if (!s1.tx_busy) v |= 1 | 4;                                   /* TXRDY, TX idle */
++	if (s1.rxn) v |= 2;                                            /* RXRDY */
++	if (s1.connected) v |= (1 << 7) | (1 << 8);                    /* DSR, CTS */
++	if (s1.irq) v |= 1 << 9;
++	return v;
++}
++static u8 read_data(void) {
++	u8 b = 0xff;
++	if (s1.rxn) { b = s1.rx[s1.rxh]; s1.rxh = (s1.rxh + 1) % RXQ; s1.rxn--; }
++	return b;
++}
++static void write_data(u8 v) {
++	DBG("[%p] write %02x ctrl %04x cb %p conn %d\n", (void *)&s1, v, s1.ctrl, (void *)tx_cb, s1.connected);
++	if (!(s1.ctrl & 1)) return;                                    /* TXEN off */
++	if (tx_cb && s1.connected) tx_cb(v);
++	s1.tx_busy = 1;
++	set_event(PSXINT_SIO1, byte_cycles());
++}
++static void write_ctrl(u16 v) {
++	DBG("[%p] ctrl %04x\n", (void *)&s1, v);
++	if (v & 0x40) {                                                /* reset most of it */
++		s1.mode = 0; s1.baud = 0; s1.irq = 0; s1.tx_busy = 0;
++		s1.ctrl = 0;
++		return;
++	}
++	if (v & 0x10) s1.irq = 0;                                      /* acknowledge */
++	s1.ctrl = v & ~0x50;
++	check_rx_irq();
++	if ((s1.ctrl & 0x0400) && !s1.tx_busy && !s1.irq) raise_irq(); /* TX IRQ enabled while idle */
++}
++
++u32 sio1Read(u32 ofs, int size) {
++	switch (ofs & 0xf) {
++	case 0x0: return read_data();
++	case 0x4: case 0x6: { u32 v = stat(); return (ofs & 2) ? v >> 16 : (size == 4 ? v : v & 0xffff); }
++	case 0x8: return s1.mode;
++	case 0xa: return s1.ctrl;
++	case 0xc: return s1.misc;
++	case 0xe: return s1.baud;
++	}
++	return 0;
++}
++void sio1Write(u32 ofs, u32 v, int size) {
++	switch (ofs & 0xf) {
++	case 0x0: write_data(v); break;
++	case 0x8: s1.mode = v; if (size == 4) write_ctrl(v >> 16); break;
++	case 0xa: write_ctrl(v); break;
++	case 0xc: s1.misc = v; if (size == 4) s1.baud = v >> 16; break;
++	case 0xe: s1.baud = v; break;
++	}
++}
++void sio1Reset(void) { int c = s1.connected; memset(&s1, 0, sizeof(s1)); s1.connected = c; }
+diff --git a/libpcsxcore/sio1.h b/libpcsxcore/sio1.h
+new file mode 100644
+index 0000000..d6b0009
+--- /dev/null
++++ b/libpcsxcore/sio1.h
+@@ -0,0 +1,18 @@
++#ifndef __SIO1_H__
++#define __SIO1_H__
++/* the serial port (link cable), see sio1.c */
++u32  sio1Read(u32 ofs, int size);
++void sio1Write(u32 ofs, u32 v, int size);
++void sio1Interrupt(void);
++void sio1Reset(void);
++/* for the frontend */
++#ifdef _WIN32
++#define PSLINK_API __declspec(dllexport)
++#else
++#define PSLINK_API
++#endif
++PSLINK_API void pslink_sio1_set_tx(void (*cb)(unsigned char));
++PSLINK_API void pslink_sio1_rx(const unsigned char *d, int n);
++PSLINK_API void pslink_sio1_connect(int on);
++PSLINK_API int  pslink_sio1_pending(void);
++#endif

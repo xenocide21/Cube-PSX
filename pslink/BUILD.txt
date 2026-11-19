@@ -1,0 +1,19 @@
+PSLink 1.0 - building it
+
+The emulator core: PCSX-ReARMed (libretro), https://github.com/libretro/pcsx_rearmed, commit
+7b0e8f8fadfbce3d170d195b9d9eecaabfa08c8e, with pcsx_pslink.patch applied (the PlayStation serial port, SIO1, and the
+link cable hooks pslink_sio1_*). Built as an interpreter (no dynarec: two cores must not share its fixed memory):
+
+  make -f Makefile.libretro platform=win CC="zig cc -target x86_64-windows-gnu" AR="zig ar" ARCH=x86_64 \
+       DYNAREC= LIGHTREC_CUSTOM_MAP=0 HAVE_PHYSICAL_CDROM=0
+  -> pcsx_rearmed_libretro.dll, renamed cores/pslink_core.dll
+  (Linux: make -f Makefile.libretro DYNAREC= LIGHTREC_CUSTOM_MAP=0 -> cores/pslink_core.so)
+
+The frontend: pslink.c with SDL 2.30 (static):
+
+  zig cc -target x86_64-windows-gnu -O2 -o pslink.exe pslink.c -I<SDL2>/include/SDL2 -L<SDL2>/lib \
+       -lSDL2main -lSDL2 -lcomdlg32 -lgdi32 -lwinmm -lsetupapi -limm32 -lversion -lole32 -loleaut32 -luuid \
+       -lshell32 -luser32 -ladvapi32 -lhid -Wl,--subsystem,windows
+  (Linux: gcc -O2 -o pslink pslink.c $(sdl2-config --cflags --libs) -ldl)
+
+PSLink and PCSX-ReARMed are GPL v2 (COPYING.txt).
