@@ -23,7 +23,7 @@ Boot `cubepsx.cue` in an emulator, or burn `cubepsx.bin/.cue`. Maps, models and 
 every original readme the game media came with (and the GPL models' original files). In short: the program is an
 altered version of Cube's source, under Cube's own license (zlib plus "no relicensing"); the maps, textures, models,
 sounds and music keep their authors' terms, which together allow free, non-commercial, downloadable distribution with
-credit - no selling, no pressed discs. Wouter van Oortmerssen has seen the port and offered to host it on the Cube site.
+credit - no selling, no pressed discs. Wouter van Oortmerssen has seen the port and offered to link it on the Cube site.
 
 **Giga Stacy** (v0.23.0): a second character, chosen when a profile is made (after the name) and changed any time from
 the hub (CHARACTER); kept in the profile. She is the dude's counterpart: the status bar portrait drawn the same way and
